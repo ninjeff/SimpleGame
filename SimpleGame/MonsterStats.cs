@@ -9,7 +9,7 @@ namespace SimpleGame
 	{
 		public static string GetStat(int monsterid, string stat)
 		{
-			return StatParser.XMLStats(monsterid, stat, SimpleGame.Properties.Resources.monsters);
+			return StatParser.Current.GetStat(monsterid, stat, SimpleGame.Properties.Resources.monsters);
 		}
 
 		public static System.Drawing.Image GetImage(int monsterid)
@@ -25,7 +25,7 @@ namespace SimpleGame
 
 		public static bool MonsterExists(int monsterid)
 		{
-			return StatParser.IDExists(monsterid, SimpleGame.Properties.Resources.monsters);
+			return StatParser.Current.IDExists(monsterid, SimpleGame.Properties.Resources.monsters);
 		}
 	}
 }

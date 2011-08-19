@@ -129,6 +129,7 @@
     <Compile Include="Shop.cs" />
     <Compile Include="Stats.cs" />
     <Compile Include="Weapon.cs" />
+    <Compile Include="XmlStatParser.cs" />
     <EmbeddedResource Include="BattleScreen.resx">
       <DependentUpon>BattleScreen.cs</DependentUpon>
     </EmbeddedResource>

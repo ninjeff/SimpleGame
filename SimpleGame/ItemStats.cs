@@ -9,7 +9,7 @@ namespace SimpleGame
 	{
 		public static string GetStat(int itemid, string stat)
 		{
-			return StatParser.XMLStats(itemid, stat, SimpleGame.Properties.Resources.items);
+			return StatParser.Current.GetStat(itemid, stat, SimpleGame.Properties.Resources.items);
 		}
 
 		public static System.Drawing.Image GetImage(int itemid)
