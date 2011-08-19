@@ -94,7 +94,7 @@ namespace SimpleGame
 
 		public int ArmourProtection
 		{
-			get { return Fighting.RandomNumber(this.equippedarmour.Protection); }
+			get { return Randomness.RandomNumber(this.equippedarmour.Protection); }
 		}
 
 		public List<Item> Inventory

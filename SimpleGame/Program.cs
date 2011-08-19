@@ -15,7 +15,11 @@ namespace SimpleGame
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainMenu());
+
+			var monsterRepository = new MonsterRepository();
+			var start = new MainMenu(monsterRepository);
+
+			Application.Run(start);
 		}
 	}
 }

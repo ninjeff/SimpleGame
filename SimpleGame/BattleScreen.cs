@@ -16,10 +16,10 @@ namespace SimpleGame
 		private bool _altF4Pressed = false;
 
 
-		public BattleScreen(Player currentplayer)
+		public BattleScreen(Player currentplayer, Monster monster)
 		{
 			InitializeComponent();
-			battle = new Battle(currentplayer);
+			battle = new Battle(currentplayer, monster);
 			this.PlayerName.Text = battle.player.Name;
 			this.PlayerHP.Text = battle.player.FormatHpText();
 			this.MonsterName.Text = battle.monster.Name;

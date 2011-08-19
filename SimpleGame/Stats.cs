@@ -22,7 +22,7 @@ namespace SimpleGame
 
 		public bool Hit()
 		{
-			return Fighting.RandomNumber(100) <= this.Accuracy;
+			return Randomness.RandomNumber(100) <= this.Accuracy;
 		}
 
 		public bool Alive { get { return this.hp >= 0; } }

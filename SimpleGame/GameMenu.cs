@@ -11,15 +11,14 @@ namespace SimpleGame
 {
 	public partial class GameMenu : Form
 	{
-
-
-
+		MonsterRepository monsterRepository;
 		Player player;
 
-		public GameMenu(Player player)
+		public GameMenu(Player player, MonsterRepository monsterRepository)
 		{
 			InitializeComponent();
 			this.player = player;
+			this.monsterRepository = monsterRepository;
 			this.UpdateText();
 		}
 
@@ -35,7 +34,10 @@ namespace SimpleGame
 
 		private void FightMonstersPicture_Click(object sender, EventArgs e)
 		{
-			BattleScreen fight = new BattleScreen(player);
+			var monsterId = monsterRepository.ChooseMonster(player.Level);
+			var monster = Monster.GetById(monsterId);
+
+			BattleScreen fight = new BattleScreen(player, monster);
 			fight.ShowDialog();
 			this.UpdateText();
 		}

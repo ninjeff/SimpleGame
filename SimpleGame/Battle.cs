@@ -11,13 +11,11 @@ namespace SimpleGame
 		public Monster monster;
 		public string combatlog;
 
-		public Battle(Player currentplayer)
+		public Battle(Player currentplayer, Monster monster)
 		{
 			player = currentplayer;
-			var monsterId = Fighting.ChooseMonster(player.Level);
-			monster = Monster.GetById(monsterId);
-
-			if (Fighting.FirstHasInitiative(monster.Speed, player.Speed))
+			this.monster = monster;
+			if (this.MonsterHasInitiative())
 			{
 				this.MonsterAttack();
 			}
@@ -27,7 +25,7 @@ namespace SimpleGame
 		{
 			if (player.Hit())
 			{
-				int damage = Fighting.RandomNumber(player.Damage);
+				int damage = Randomness.RandomNumber(player.Damage);
 
 				if (damage > 0)
 				{
@@ -49,7 +47,7 @@ namespace SimpleGame
 		{
 			if (monster.Hit())
 			{
-				int damage = Fighting.RandomNumber(monster.Damage);
+				int damage = Randomness.RandomNumber(monster.Damage);
 
 				if (damage > 0)
 				{
@@ -90,7 +88,7 @@ namespace SimpleGame
 
 		public bool TryToRun()
 		{
-			if (StillFighting() && Fighting.FirstHasInitiative(monster.Speed, player.Speed))
+			if (StillFighting() && this.MonsterHasInitiative())
 			{
 				combatlog = ("The " + monster.Name + " chased you down!" + System.Environment.NewLine + this.combatlog);
 				MonsterAttack();
@@ -114,5 +112,9 @@ namespace SimpleGame
 			}
 		}
 
+		public bool MonsterHasInitiative()
+		{
+			return Randomness.RandomNumber(monster.Speed) > Randomness.RandomNumber(player.Speed);
+		}
 	}
 }

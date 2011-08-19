@@ -5,32 +5,9 @@ using System.Text;
 
 namespace SimpleGame
 {
-	public static class Fighting
+	public static class Randomness
 	{
 		private static Random rnd = new Random();
-
-		private static List<List<int>> monsterLevels = new List<List<int>>();
-		
-
-
-		public static void generateMonsterList()
-		{
-			for (int i = 0; i < 20; i++)
-			{
-				monsterLevels.Add(new List<int>());
-			}
-			for (int i = 0; MonsterStats.MonsterExists(i); i++)
-			{
-				int level = int.Parse(MonsterStats.GetStat(i, "level"));
-				monsterLevels[level].Add(i);
-			}
-		}
-
-		public static int ChooseMonster(int playerlevel)
-		{
-			int enemylevel = RandomNumber(playerlevel - 1, playerlevel + 1);
-			return monsterLevels[enemylevel][RandomNumber(monsterLevels[enemylevel].Count-1)];
-		}
 
 		public static int RandomNumber(int minimum, int maximum)
 		{
@@ -42,9 +19,11 @@ namespace SimpleGame
 			return RandomNumber(0, maximum);
 		}
 
-		public static bool FirstHasInitiative(int monsterspeed, int playerspeed)
+		public static T GetRandomElement<T>(this ICollection<T> source)
 		{
-			return RandomNumber(monsterspeed) > RandomNumber(playerspeed);
+			var count = source.Count;
+			var index = RandomNumber(count);
+			return source.ElementAt(index);
 		}
 	}
 }
