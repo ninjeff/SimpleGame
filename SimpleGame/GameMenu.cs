@@ -34,8 +34,7 @@ namespace SimpleGame
 
 		private void FightMonstersPicture_Click(object sender, EventArgs e)
 		{
-			var monsterId = monsterRepository.ChooseMonster(player.Level);
-			var monster = Monster.GetById(monsterId);
+			var monster = monsterRepository.ChooseMonster(player.Level);
 
 			BattleScreen fight = new BattleScreen(player, monster);
 			fight.ShowDialog();

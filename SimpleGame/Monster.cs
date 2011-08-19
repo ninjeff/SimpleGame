@@ -12,28 +12,13 @@ namespace SimpleGame
 		private int goldreward;
 		private System.Drawing.Image picture;
 
-		public static Monster GetById(int monsterid)
-		{
-			return new Monster(MonsterStats.GetStat(monsterid, "name"))
-			{
-				stats = new Stats()
-				{
-					Level = int.Parse(MonsterStats.GetStat(monsterid, "level")),
-					MaxHp = int.Parse(MonsterStats.GetStat(monsterid, "hp")),
-					Hp = int.Parse(MonsterStats.GetStat(monsterid, "hp")),
-					Accuracy = int.Parse(MonsterStats.GetStat(monsterid, "accuracy")),
-					Strength = int.Parse(MonsterStats.GetStat(monsterid, "damage")),
-					Speed = int.Parse(MonsterStats.GetStat(monsterid, "speed"))
-				},
-				xpreward = int.Parse(MonsterStats.GetStat(monsterid, "xp")),
-				goldreward = int.Parse(MonsterStats.GetStat(monsterid, "gold")),
-				picture = SimpleGame.Properties.Resources.rabbit_image
-			};
-		}
-
-		public Monster(string name)
+		public Monster(string name, Stats stats, int xpreward, int goldreward, System.Drawing.Image picture)
 		{
 			this.Name = name;
+			this.stats = stats;
+			this.xpreward = xpreward;
+			this.goldreward = goldreward;
+			this.picture = picture;
 		}
 
 		public int XPReward
