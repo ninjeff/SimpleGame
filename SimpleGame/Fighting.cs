@@ -42,7 +42,7 @@ namespace SimpleGame
 			return RandomNumber(0, maximum);
 		}
 
-		public static bool MonsterHasInitiative(int monsterspeed, int playerspeed)
+		public static bool FirstHasInitiative(int monsterspeed, int playerspeed)
 		{
 			return RandomNumber(monsterspeed) > RandomNumber(playerspeed);
 		}

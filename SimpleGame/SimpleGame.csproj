@@ -39,6 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -93,6 +94,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="ItemGenerator.cs" />
     <Compile Include="ItemStats.cs" />
+    <Compile Include="IWarrior.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,7 +127,7 @@
     </Compile>
     <Compile Include="StatParser.cs" />
     <Compile Include="Shop.cs" />
-    <Compile Include="Warrior.cs" />
+    <Compile Include="Stats.cs" />
     <Compile Include="Weapon.cs" />
     <EmbeddedResource Include="BattleScreen.resx">
       <DependentUpon>BattleScreen.cs</DependentUpon>

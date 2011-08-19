@@ -6,15 +6,17 @@ using System.Runtime.Serialization;
 
 namespace SimpleGame
 {
+	public enum ConsumableType { HealthPotion, StrengthPotion, SpeedPotion, None };
+
 	[Serializable]
 	class Consumable : Item, ISerializable
 	{
 		private int count;
-		public enum ConsumableType { HealthPotion, StrengthPotion, SpeedPotion, None };
 		private ConsumableType consumabletype;
 		private int effectiveness;
 
-		public Consumable(int itemid): base(itemid)
+		public Consumable(int itemid)
+			: base(itemid)
 		{
 			this.picture = SimpleGame.Properties.Resources.potion_image;
 			this.consumabletype = this.setConsumableType(itemid);
@@ -22,7 +24,8 @@ namespace SimpleGame
 			this.count = 1;
 		}
 
-		public Consumable(SerializationInfo info, StreamingContext ctxt): base(info, ctxt)
+		public Consumable(SerializationInfo info, StreamingContext ctxt)
+			: base(info, ctxt)
 		{
 			this.consumabletype = (ConsumableType)info.GetValue("consumabletype", typeof(ConsumableType));
 			this.effectiveness = (int)info.GetValue("effectiveness", typeof(int));
@@ -47,7 +50,7 @@ namespace SimpleGame
 			set { count = value; }
 		}
 
-		public ConsumableType Type
+		public ConsumableType ConsumableType
 		{
 			get { return consumabletype; }
 		}

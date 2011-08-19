@@ -93,15 +93,15 @@ namespace SimpleGame
 				 player.Inventory.Remove(selection);
 			}
 
-			switch (selection.Type)
+			switch (selection.ConsumableType)
 			{
-				case Consumable.ConsumableType.HealthPotion:
+				case ConsumableType.HealthPotion:
 					player.HP += selection.Effectiveness;
 					break;
-				case Consumable.ConsumableType.StrengthPotion:
+				case ConsumableType.StrengthPotion:
 					player.TemporaryDamageBonus = selection.Effectiveness;
 					break;
-				case Consumable.ConsumableType.SpeedPotion:
+				case ConsumableType.SpeedPotion:
 					break;
 				default:
 					break;

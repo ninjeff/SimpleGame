@@ -14,16 +14,16 @@ namespace SimpleGame
 		private Battle battle;
 		System.Timers.Timer autoattacktimer = new System.Timers.Timer();
 		private bool _altF4Pressed = false;
-		
+
 
 		public BattleScreen(Player currentplayer)
 		{
 			InitializeComponent();
 			battle = new Battle(currentplayer);
 			this.PlayerName.Text = battle.player.Name;
-			this.PlayerHP.Text = battle.player.HPText;
+			this.PlayerHP.Text = battle.player.FormatHpText();
 			this.MonsterName.Text = battle.monster.Name;
-			this.MonsterHP.Text = battle.monster.HPText;
+			this.MonsterHP.Text = battle.monster.FormatHpText();
 			this.PlayerPicture.Image = global::SimpleGame.Properties.Resources.player_image;
 			this.MonsterPicture.Image = battle.monster.Picture;
 		}
@@ -75,8 +75,8 @@ namespace SimpleGame
 		private void UpdateTextAndPictures()
 		{
 			this.CombatLogTextBox.Text = battle.combatlog;
-			this.MonsterHP.Text = battle.monster.HPText;
-			this.PlayerHP.Text = battle.player.HPText;
+			this.MonsterHP.Text = battle.monster.FormatHpText();
+			this.PlayerHP.Text = battle.player.FormatHpText();
 			this.SetHPTextColour();
 			if (!battle.StillFighting())
 			{
@@ -123,7 +123,7 @@ namespace SimpleGame
 					this.StopAutoAttack();
 				}
 			}
-		
+
 		}
 
 		private void AutoAttack(object sender, EventArgs e)
@@ -146,12 +146,12 @@ namespace SimpleGame
 					this.StopAutoAttack();
 				}
 			}
-		
-				else
-				{
-					this.StopAutoAttack();
-				}
-			
+
+			else
+			{
+				this.StopAutoAttack();
+			}
+
 		}
 
 		private void StopAutoAttack()
@@ -159,13 +159,13 @@ namespace SimpleGame
 			autoattacktimer.Stop();
 			if (battle.StillFighting())
 			{
-				this.AutoPicture.Image = SimpleGame.Properties.Resources.auto_image;	
+				this.AutoPicture.Image = SimpleGame.Properties.Resources.auto_image;
 			}
 			else
 			{
 				this.AutoPicture.Image = null;
 			}
-			
+
 		}
 
 		private void EndOfBattle(object sender, FormClosedEventArgs e)
@@ -214,6 +214,6 @@ namespace SimpleGame
 
 
 
-		
+
 	}
 }

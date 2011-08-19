@@ -7,28 +7,18 @@ using System.Runtime.Serialization;
 namespace SimpleGame
 {
 	[Serializable]
-	public class Player : Warrior, ISerializable
+	public class Player : ISerializable, IWarrior
 	{
-		private int xp;
-		private int nextlevel;
-		private int gold;
+		private Stats stats;
 		private Weapon equippedweapon;
 		private Armour equippedarmour;
 
 		private List<Item> inventory = new List<Item>();
 
-		public Player(string name, int hp, int level, int nextlevel, int xp, int accuracy, int strength, int speed, int gold, List<Item> inventory, Weapon weapon, Armour armour)
+		public Player(string name, Stats stats, List<Item> inventory, Weapon weapon, Armour armour)
 		{
-			this.name = name;
-			this.hp = this.maxhp = hp;
-			this.level = level;
-			this.nextlevel = nextlevel;
-			this.xp = xp;
-			this.accuracy = accuracy;
-			this.strength = strength;
-			this.speed = speed;
-			this.gold = gold;
-
+			this.Name = name;
+			this.stats = stats;
 			this.inventory = inventory;
 			this.equippedweapon = weapon;
 			this.equippedarmour = armour;
@@ -36,24 +26,39 @@ namespace SimpleGame
 
 		public Player(SerializationInfo info, StreamingContext ctxt)
 		{
-			this.name = (string)info.GetValue("name", typeof(string));
-			this.hp = this.maxhp = (int)info.GetValue("maxhp", typeof(int));
-			this.level = (int)info.GetValue("level", typeof(int));
-			this.nextlevel = (int)info.GetValue("nextlevel", typeof(int));
-			this.xp = (int)info.GetValue("xp", typeof(int));
-			this.accuracy = (int)info.GetValue("accuracy", typeof(int));
-			this.strength = (int)info.GetValue("strength", typeof(int));
-			this.speed = (int)info.GetValue("speed", typeof(int));
-			this.gold = (int)info.GetValue("gold", typeof(int));
-
+			this.stats = (Stats)info.GetValue("stats", typeof(Stats));
 			this.inventory = (List<Item>)info.GetValue("inventory", typeof(List<Item>));
-			this.equippedweapon= (Weapon)info.GetValue("weapon", typeof(Weapon));
-			this.equippedarmour= (Armour)info.GetValue("armour", typeof(Armour));
+			this.equippedweapon = (Weapon)info.GetValue("weapon", typeof(Weapon));
+			this.equippedarmour = (Armour)info.GetValue("armour", typeof(Armour));
+
+			this.Name = (string)info.GetValue("Name", typeof(string));
+			this.XP = (int)info.GetValue("XP", typeof(int));
+			this.Gold = (int)info.GetValue("Gold", typeof(int));
 		}
 
 		public Player()
 		{
 		}
+
+		public string Name { get; private set; }
+
+		public int Gold { get; set; }
+
+		private int xp;
+		public int XP
+		{
+			get { return xp; }
+			set
+			{
+				xp = value;
+				while (this.XP >= this.NextLevel)
+				{
+					levelup();
+				}
+			}
+		}
+
+		public int MaxHP { get { return stats.MaxHp; } }
 
 		public bool PlayerHasItem(int itemid)
 		{
@@ -87,11 +92,6 @@ namespace SimpleGame
 			get { return equippedarmour; }
 		}
 
-		public int Damage
-		{
-			get { return strength; }
-		}
-
 		public int ArmourProtection
 		{
 			get { return Fighting.RandomNumber(this.equippedarmour.Protection); }
@@ -104,76 +104,70 @@ namespace SimpleGame
 
 		public int Level
 		{
-			get { return level; }
+			get { return stats.Level; }
 		}
 
-		public int XP
+		public int NextLevel
 		{
-			get { return xp; }
-			set
-			{
-				if (value >= nextlevel)
-				{
-					levelup();
-					xp = value;
-				}
-				else
-				{
-					xp = value;
-				}
-			}
+			get { return 100 * (1 << (stats.Level - 1)); }
 		}
 
-		public int Gold
-		{
-			get { return gold; }
-			set { gold = value; }
-		}
 
 		public string XPText
 		{
-			get
-			{
-				return this.xp.ToString() + "/" + this.nextlevel.ToString();
-			}
+			get { return String.Format("{0}/{1}", this.XP, this.NextLevel); }
 		}
-		
+
+		public bool Alive
+		{
+			get { return stats.Alive; }
+		}
+
+		public int Damage
+		{
+			get { return stats.Strength + this.EquippedWeapon.Damage + this.TemporaryDamageBonus; }
+		}
+
+		public int HP
+		{
+			get { return stats.Hp; }
+			set { stats.Hp = value; }
+		}
+
+		public int Speed
+		{
+			get { return stats.Speed; }
+		}
+
+		public int TemporaryDamageBonus { get; set; }
+
+		public bool Hit()
+		{
+			return stats.Hit();
+		}
+
 		private void levelup()
 		{
-			nextlevel *= 2;
-			level++;
-			maxhp += level * 5;
+			stats.Level++;
+			stats.MaxHp += stats.Level * 5;
 		}
 
 		public void Resurrect(int cost)
 		{
-			this.hp = this.maxhp;
-			if (this.gold >= cost)
-			{
-				this.gold -= cost;
-			}
-			else
-			{
-				this.gold = 0;
-			}
+			stats.Hp = stats.MaxHp;
+			this.Gold = Math.Max(this.Gold - cost, 0);
 		}
 
 		public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
 		{
-			info.AddValue("name", this.name);
-			info.AddValue("maxhp", this.maxhp);
-			info.AddValue("level", this.level);
-			info.AddValue("nextlevel", this.nextlevel);
-			info.AddValue("xp", this.xp);
-			info.AddValue("accuracy", this.accuracy);
-			info.AddValue("strength", this.strength);
-			info.AddValue("speed", this.speed);
-			info.AddValue("gold", this.gold);
-
+			info.AddValue("stats", this.stats);
 			info.AddValue("inventory", this.inventory);
 			info.AddValue("weapon", this.equippedweapon);
 			info.AddValue("armour", this.equippedarmour);
-		}
 
+			info.AddValue("Name", this.Name);
+			info.AddValue("XP", this.XP);
+			info.AddValue("Gold", this.Gold);
+		}
 	}
 }

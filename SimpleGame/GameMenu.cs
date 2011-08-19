@@ -12,9 +12,9 @@ namespace SimpleGame
 	public partial class GameMenu : Form
 	{
 
-		
 
-		Player player;	
+
+		Player player;
 
 		public GameMenu(Player player)
 		{
@@ -61,16 +61,15 @@ namespace SimpleGame
 		{
 			if (MessageBox.Show("Are you sure you want to quit the game?", "Really Quit?", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
 			{
-			Environment.Exit(0);
+				Environment.Exit(0);
 			}
 		}
 
 		private void UpdateText()
 		{
-
 			this.NameLabel.Text = player.Name;
 			this.XPLabel.Text = player.XPText;
-			this.HPLabel.Text = player.HPText;
+			this.HPLabel.Text = player.FormatHpText();
 			this.LevelLabel.Text = player.Level.ToString();
 			this.GoldLabel.Text = player.Gold.ToString();
 		}

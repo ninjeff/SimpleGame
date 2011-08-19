@@ -18,7 +18,8 @@ namespace SimpleGame
 			inventory.Add(ItemGenerator.CreateItem(7));
 			Weapon weapon = (Weapon)ItemGenerator.CreateItem(-1);
 			Armour armour = (Armour)ItemGenerator.CreateItem(-2);
-			Player player = new Player(name, 10, 1, 100, 0, 80, 3, 7, 1001, inventory, weapon, armour);
+			Stats playerStats = new Stats() { Accuracy = 80, MaxHp = 10, Hp = 10, Level = 1, Strength = 3, Speed = 7 };
+			Player player = new Player(name, playerStats, inventory, weapon, armour) { Gold = 1001 };
 			GameInProgress = true;
 			return player;
 		}
@@ -44,8 +45,8 @@ namespace SimpleGame
 			Player player = (Player)formatter.Deserialize(stream);
 
 
-		//	Player player = new Player(name, hp, level, nextlevel, xp, accuracy, strength, speed, gold, inventory, weapon, armour);
- 
+			//	Player player = new Player(name, hp, level, nextlevel, xp, accuracy, strength, speed, gold, inventory, weapon, armour);
+
 			return player;
 		}
 	}

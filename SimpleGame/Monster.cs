@@ -5,24 +5,35 @@ using System.Text;
 
 namespace SimpleGame
 {
-	class Monster : Warrior
+	public class Monster : IWarrior
 	{
-
+		private Stats stats;
 		private int xpreward;
 		private int goldreward;
 		private System.Drawing.Image picture;
 
-		public Monster(int monsterid)
+		public static Monster GetById(int monsterid)
 		{
-			this.name = MonsterStats.GetStat(monsterid, "name");
-			this.level = int.Parse(MonsterStats.GetStat(monsterid, "level"));
-			this.hp = this.maxhp = int.Parse(MonsterStats.GetStat(monsterid, "hp"));
-			this.xpreward = int.Parse(MonsterStats.GetStat(monsterid, "xp"));
-			this.goldreward = int.Parse(MonsterStats.GetStat(monsterid, "gold"));
-			this.accuracy = int.Parse(MonsterStats.GetStat(monsterid, "accuracy"));
-			this.strength = int.Parse(MonsterStats.GetStat(monsterid, "damage"));
-			this.speed = int.Parse(MonsterStats.GetStat(monsterid, "speed"));
-			this.picture = SimpleGame.Properties.Resources.rabbit_image;
+			return new Monster(MonsterStats.GetStat(monsterid, "name"))
+			{
+				stats = new Stats()
+				{
+					Level = int.Parse(MonsterStats.GetStat(monsterid, "level")),
+					MaxHp = int.Parse(MonsterStats.GetStat(monsterid, "hp")),
+					Hp = int.Parse(MonsterStats.GetStat(monsterid, "hp")),
+					Accuracy = int.Parse(MonsterStats.GetStat(monsterid, "accuracy")),
+					Strength = int.Parse(MonsterStats.GetStat(monsterid, "damage")),
+					Speed = int.Parse(MonsterStats.GetStat(monsterid, "speed"))
+				},
+				xpreward = int.Parse(MonsterStats.GetStat(monsterid, "xp")),
+				goldreward = int.Parse(MonsterStats.GetStat(monsterid, "gold")),
+				picture = SimpleGame.Properties.Resources.rabbit_image
+			};
+		}
+
+		public Monster(string name)
+		{
+			this.Name = name;
 		}
 
 		public int XPReward
@@ -40,5 +51,49 @@ namespace SimpleGame
 			get { return picture; }
 		}
 
+
+		public bool Alive
+		{
+			get { return stats.Alive; }
+		}
+
+		public int Damage
+		{
+			get { return stats.Strength; }
+		}
+
+		public int HP
+		{
+			get
+			{
+				return stats.Hp;
+			}
+			set
+			{
+				stats.Hp = value;
+			}
+		}
+
+		public int Level
+		{
+			get { return stats.Level; }
+		}
+
+		public string Name { get; private set; }
+
+		public int Speed
+		{
+			get { return stats.Speed; }
+		}
+
+		public bool Hit()
+		{
+			return stats.Hit();
+		}
+
+		public int MaxHP
+		{
+			get { return stats.MaxHp; }
+		}
 	}
 }
