@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
 	public class ItemGenerator
 	{
 		private readonly ItemStats itemStats;
+		private readonly System.Drawing.Image armour_image;
+		private readonly System.Drawing.Image potion_image;
+		private readonly System.Drawing.Image weapon_image;
 
-		public ItemGenerator(ItemStats itemStats)
+		public ItemGenerator(ItemStats itemStats, System.Drawing.Image armour_image, System.Drawing.Image potion_image, System.Drawing.Image weapon_image)
 		{
 			this.itemStats = itemStats;
+			this.armour_image = armour_image;
+			this.potion_image = potion_image;
+			this.weapon_image = weapon_image;
 		}
 
 		public Item CreateItem(int itemid)
@@ -36,7 +42,7 @@ namespace SimpleGame
 			var value = int.Parse(itemStats.GetStat(itemid, "value"));
 			var type = this.setItemType(itemid);
 			var protection = int.Parse(itemStats.GetStat(itemid, "protection"));
-			var picture = SimpleGame.Properties.Resources.armour_image;
+			var picture = armour_image;
 
 			return new Armour(itemid, name, weight, value, type, protection, picture);
 		}
@@ -47,7 +53,7 @@ namespace SimpleGame
 			var weight = int.Parse(itemStats.GetStat(itemid, "weight"));
 			var value = int.Parse(itemStats.GetStat(itemid, "value"));
 			var type = this.setItemType(itemid);
-			var picture = SimpleGame.Properties.Resources.potion_image;
+			var picture = potion_image;
 			var consumabletype = this.setConsumableType(itemid);
 			var effectiveness = int.Parse(itemStats.GetStat(itemid, "effectiveness"));
 			var count = 1;
@@ -72,7 +78,7 @@ namespace SimpleGame
 			var value = int.Parse(itemStats.GetStat(itemid, "value"));
 			var type = this.setItemType(itemid);
 			var damage = int.Parse(itemStats.GetStat(itemid, "damage"));
-			var picture = SimpleGame.Properties.Resources.weapon_image;
+			var picture = weapon_image;
 
 			return new Weapon(itemid, name, weight, value, type, damage, picture);
 		}

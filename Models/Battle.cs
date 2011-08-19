@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
-	class Battle
+	public class Battle
 	{
 		public Player player;
 		public Monster monster;

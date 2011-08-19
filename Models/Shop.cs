@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
-	class Shop
+	public class Shop
 	{
 		private readonly ItemGenerator itemGenerator;
 		private List<Item> stock = new List<Item>();

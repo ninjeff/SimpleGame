@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
 	public enum ConsumableType { HealthPotion, StrengthPotion, SpeedPotion, None };
 
 	[Serializable]
-	class Consumable : Item, ISerializable
+	public class Consumable : Item, ISerializable
 	{
 		private int count;
 		private ConsumableType consumabletype;

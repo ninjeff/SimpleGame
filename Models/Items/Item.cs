@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
 	public enum ItemType { None, Weapon, Armour, Consumable }
 

@@ -9,10 +9,12 @@ namespace SimpleGame
 	{
 		private IDictionary<int, ICollection<int>> monsterLevels;
 		private readonly MonsterStats monsterStats;
+		private readonly System.Drawing.Image rabbit_image;
 
-		public MonsterRepository(MonsterStats monsterStats)
+		public MonsterRepository(MonsterStats monsterStats, System.Drawing.Image rabbit_image)
 		{
 			this.monsterStats = monsterStats;
+			this.rabbit_image = rabbit_image;
 		}
 
 		public Monster ChooseMonster(int playerlevel)
@@ -39,7 +41,7 @@ namespace SimpleGame
 			};
 			var xp = int.Parse(monsterStats.GetStat(monsterid, "xp"));
 			var gold = int.Parse(monsterStats.GetStat(monsterid, "gold"));
-			var picture = SimpleGame.Properties.Resources.rabbit_image;
+			var picture = rabbit_image;
 
 			return new Monster(name, stats, xp, gold, picture);
 		}

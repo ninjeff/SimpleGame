@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
 	public class Game
 	{
