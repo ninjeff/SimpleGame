@@ -5,14 +5,21 @@ using System.Text;
 
 namespace SimpleGame
 {
-	public static class MonsterStats
+	public class MonsterStats
 	{
-		public static string GetStat(int monsterid, string stat)
+		private readonly IStatParser statParser;
+
+		public MonsterStats(IStatParser statParser)
 		{
-			return StatParser.Current.GetStat(monsterid, stat, SimpleGame.Properties.Resources.monsters);
+			this.statParser = statParser;
 		}
 
-		public static System.Drawing.Image GetImage(int monsterid)
+		public string GetStat(int monsterid, string stat)
+		{
+			return statParser.GetStat(monsterid, stat, SimpleGame.Properties.Resources.monsters);
+		}
+
+		public System.Drawing.Image GetImage(int monsterid)
 		{
 			switch (monsterid)
 			{
@@ -23,9 +30,9 @@ namespace SimpleGame
 			}
 		}
 
-		public static bool MonsterExists(int monsterid)
+		public bool MonsterExists(int monsterid)
 		{
-			return StatParser.Current.IDExists(monsterid, SimpleGame.Properties.Resources.monsters);
+			return statParser.IDExists(monsterid, SimpleGame.Properties.Resources.monsters);
 		}
 	}
 }

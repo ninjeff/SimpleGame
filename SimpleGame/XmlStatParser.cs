@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SimpleGame
 {
-	public class XmlStatParser : StatParser
+	public class XmlStatParser : IStatParser
 	{
-		public override string GetStat(int entityid, string stat, string statsfile)
+		public string GetStat(int entityid, string stat, string statsfile)
 		{
 			using (var entitystats = new System.IO.StringReader(statsfile))
 			using (var xmlReader = System.Xml.XmlReader.Create(entitystats))
@@ -27,7 +27,7 @@ namespace SimpleGame
 			}
 		}
 
-		public override bool IDExists(int entityid, string statsfile)
+		public bool IDExists(int entityid, string statsfile)
 		{
 			using (var entitystats = new System.IO.StringReader(statsfile))
 			using (var xmlReader = System.Xml.XmlReader.Create(entitystats))

@@ -77,7 +77,7 @@ namespace SimpleGame
 			return new Weapon(itemid, name, weight, value, type, damage, picture);
 		}
 
-		public  ConsumableType setConsumableType(int itemid)
+		private ConsumableType setConsumableType(int itemid)
 		{
 			switch (itemStats.GetStat(itemid, "consumabletype"))
 			{
@@ -92,7 +92,7 @@ namespace SimpleGame
 			}
 		}
 
-		public  ItemType setItemType(int itemid)
+		private ItemType setItemType(int itemid)
 		{
 			switch (itemStats.GetStat(itemid, "type"))
 			{

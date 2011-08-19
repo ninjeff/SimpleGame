@@ -90,6 +90,7 @@
       <DependentUpon>CombatInventory.cs</DependentUpon>
     </Compile>
     <Compile Include="Consumable.cs" />
+    <Compile Include="IStatParser.cs" />
     <Compile Include="Randomness.cs" />
     <Compile Include="MonsterRepository.cs" />
     <Compile Include="Item.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="ShopMenu.Designer.cs">
       <DependentUpon>ShopMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="StatParser.cs" />
     <Compile Include="Shop.cs" />
     <Compile Include="Stats.cs" />
     <Compile Include="Weapon.cs" />

@@ -16,10 +16,12 @@ namespace SimpleGame
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			var itemStats = new ItemStats();
+			var statParser = new XmlStatParser();
+			var itemStats = new ItemStats(statParser);
 			var itemGenerator = new ItemGenerator(itemStats);
 			var game = new Game(itemGenerator);
-			var monsterRepository = new MonsterRepository();
+			var monsterStats = new MonsterStats(statParser);
+			var monsterRepository = new MonsterRepository(monsterStats);
 			var start = new MainMenu(game, itemGenerator, monsterRepository);
 
 			Application.Run(start);

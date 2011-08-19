@@ -7,9 +7,16 @@ namespace SimpleGame
 {
 	public class ItemStats
 	{
+		private readonly IStatParser statParser;
+
+		public ItemStats(IStatParser statParser)
+		{
+			this.statParser = statParser;
+		}
+
 		public string GetStat(int itemid, string stat)
 		{
-			return StatParser.Current.GetStat(itemid, stat, SimpleGame.Properties.Resources.items);
+			return statParser.GetStat(itemid, stat, SimpleGame.Properties.Resources.items);
 		}
 
 		public System.Drawing.Image GetImage(int itemid)
