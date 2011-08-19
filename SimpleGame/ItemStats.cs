@@ -5,14 +5,14 @@ using System.Text;
 
 namespace SimpleGame
 {
-	class ItemStats
+	public class ItemStats
 	{
-		public static string GetStat(int itemid, string stat)
+		public string GetStat(int itemid, string stat)
 		{
 			return StatParser.Current.GetStat(itemid, stat, SimpleGame.Properties.Resources.items);
 		}
 
-		public static System.Drawing.Image GetImage(int itemid)
+		public System.Drawing.Image GetImage(int itemid)
 		{
 			switch (itemid)
 			{

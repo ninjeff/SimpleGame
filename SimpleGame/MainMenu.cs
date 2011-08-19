@@ -11,11 +11,15 @@ namespace SimpleGame
 {
 	public partial class MainMenu : Form
 	{
+		private readonly Game game;
+		private readonly ItemGenerator itemGenerator;
 		private readonly MonsterRepository monsterRepository;
 
-		public MainMenu(MonsterRepository monsterRepository)
+		public MainMenu(Game game, ItemGenerator itemGenerator, MonsterRepository monsterRepository)
 		{
 			InitializeComponent();
+			this.game = game;
+			this.itemGenerator = itemGenerator;
 			this.monsterRepository = monsterRepository;
 		}
 
@@ -31,13 +35,13 @@ namespace SimpleGame
 
 		private void newgame()
 		{
-			NewGame window = new NewGame();
+			NewGame window = new NewGame(game);
 			if (window.ShowDialog(this) == DialogResult.OK)
 			{
-				var player = Game.StartGame(window.CharacterNameTextBox());
-				GameMenu game = new GameMenu(player, monsterRepository);
+				var player = game.StartGame(window.CharacterNameTextBox());
+				GameMenu gameMenu = new GameMenu(game, itemGenerator, player, monsterRepository);
 				this.Hide();
-				game.Show();
+				gameMenu.Show();
 			}
 		}
 
@@ -45,10 +49,10 @@ namespace SimpleGame
 		{
 			if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				var player = Game.LoadGame(openFileDialog.FileName);
-				GameMenu game = new GameMenu(player, monsterRepository);
+				var player = game.LoadGame(openFileDialog.FileName);
+				GameMenu gameMenu = new GameMenu(game, itemGenerator, player, monsterRepository);
 				this.Hide();
-				game.Show();
+				gameMenu.Show();
 			}
 		}
 

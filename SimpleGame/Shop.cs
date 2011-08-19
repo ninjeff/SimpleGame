@@ -7,11 +7,13 @@ namespace SimpleGame
 {
 	class Shop
 	{
+		private readonly ItemGenerator itemGenerator;
 		private List<Item> stock = new List<Item>();
 		Player customer;
 
-		public Shop(Player shopper)
+		public Shop(Player shopper, ItemGenerator itemGenerator)
 		{
+			this.itemGenerator = itemGenerator;
 			this.customer = shopper;
 			this.stockshop();
 		}
@@ -20,24 +22,24 @@ namespace SimpleGame
 		{
 			for (int i = 1; i < 9; i++)
 			{
-				stock.Add(ItemGenerator.CreateItem(i));
+				stock.Add(itemGenerator.CreateItem(i));
 			}
 		}
 
 		public void BuyItem(Item item)
 		{
 			customer.Gold -= item.Value * 15;
-			if (item.Type == Item.ItemType.Consumable && customer.PlayerHasItem(item.ID))
+			if (item.Type == ItemType.Consumable && customer.PlayerHasItem(item.ID))
 			{
-				Consumable currentstash = (Consumable)customer.Inventory.Find(delegate(Item target){ return target.ID == item.ID; } );
-				currentstash.Count ++;
+				Consumable currentstash = (Consumable)customer.Inventory.Find(delegate(Item target) { return target.ID == item.ID; });
+				currentstash.Count++;
 			}
 			else
 			{
-				customer.Inventory.Add(ItemGenerator.CreateItem(item.ID));
+				customer.Inventory.Add(itemGenerator.CreateItem(item.ID));
 			}
 		}
-		
+
 
 		public List<Item> Stock
 		{

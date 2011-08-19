@@ -11,12 +11,16 @@ namespace SimpleGame
 {
 	public partial class GameMenu : Form
 	{
-		MonsterRepository monsterRepository;
-		Player player;
+		private readonly Game game;
+		private readonly ItemGenerator itemGenerator;
+		private readonly MonsterRepository monsterRepository;
+		private Player player;
 
-		public GameMenu(Player player, MonsterRepository monsterRepository)
+		public GameMenu(Game game, ItemGenerator itemGenerator, Player player, MonsterRepository monsterRepository)
 		{
 			InitializeComponent();
+			this.game = game;
+			this.itemGenerator = itemGenerator;
 			this.player = player;
 			this.monsterRepository = monsterRepository;
 			this.UpdateText();
@@ -24,10 +28,10 @@ namespace SimpleGame
 
 		private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			NewGame window = new NewGame();
+			NewGame window = new NewGame(game);
 			if (window.ShowDialog(this) == DialogResult.OK)
 			{
-				this.player = Game.StartGame(window.CharacterNameTextBox());
+				this.player = game.StartGame(window.CharacterNameTextBox());
 				this.UpdateText();
 			}
 		}
@@ -43,7 +47,7 @@ namespace SimpleGame
 
 		private void ShopPicture_Click(object sender, EventArgs e)
 		{
-			ShopMenu goshopping = new ShopMenu(player);
+			ShopMenu goshopping = new ShopMenu(player, itemGenerator);
 			goshopping.ShowDialog();
 			this.UpdateText();
 		}
@@ -79,7 +83,7 @@ namespace SimpleGame
 		{
 			if (saveFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				Game.SaveGame(player, saveFileDialog.FileName);
+				game.SaveGame(player, saveFileDialog.FileName);
 			}
 		}
 

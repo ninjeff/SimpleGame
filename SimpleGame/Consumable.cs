@@ -15,34 +15,31 @@ namespace SimpleGame
 		private ConsumableType consumabletype;
 		private int effectiveness;
 
-		public Consumable(int itemid)
-			: base(itemid)
+		public Consumable(int itemid, string name, int weight, int value, ItemType type, System.Drawing.Image picture, ConsumableType consumabletype, int effectiveness, int count)
+			: base(itemid, name, weight, value, type)
 		{
-			this.picture = SimpleGame.Properties.Resources.potion_image;
-			this.consumabletype = this.setConsumableType(itemid);
-			this.effectiveness = int.Parse(ItemStats.GetStat(itemid, "effectiveness"));
-			this.count = 1;
+			this.picture = picture;
+			this.consumabletype = consumabletype;
+			this.effectiveness = effectiveness;
+			this.count = count;
 		}
 
 		public Consumable(SerializationInfo info, StreamingContext ctxt)
 			: base(info, ctxt)
 		{
-			this.consumabletype = (ConsumableType)info.GetValue("consumabletype", typeof(ConsumableType));
+			this.consumabletype = (ConsumableType)info.GetValue("consumabletype", typeof(int));
 			this.effectiveness = (int)info.GetValue("effectiveness", typeof(int));
 			this.count = (int)info.GetValue("count", typeof(int));
 		}
-
-
 
 		public override void GetObjectData(SerializationInfo info, StreamingContext ctxt)
 		{
 			base.GetObjectData(info, ctxt);
 
-			info.AddValue("consumabletype", this.consumabletype);
+			info.AddValue("consumabletype", (int)this.consumabletype);
 			info.AddValue("effectiveness", this.effectiveness);
 			info.AddValue("count", this.count);
 		}
-
 
 		public int Count
 		{
@@ -58,22 +55,6 @@ namespace SimpleGame
 		public int Effectiveness
 		{
 			get { return effectiveness; }
-		}
-
-
-		private ConsumableType setConsumableType(int itemid)
-		{
-			switch (ItemStats.GetStat(itemid, "consumabletype"))
-			{
-				case "HealthPotion":
-					return ConsumableType.HealthPotion;
-				case "StrengthPotion":
-					return ConsumableType.StrengthPotion;
-				case "SpeedPotion":
-					return ConsumableType.SpeedPotion;
-				default:
-					return ConsumableType.None;
-			}
 		}
 
 		public override string Name

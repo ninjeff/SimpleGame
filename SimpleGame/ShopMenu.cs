@@ -24,10 +24,10 @@ namespace SimpleGame
 
 		private delegate void actionClickedEventHandler(Item item);
 		
-		public ShopMenu(Player player)
+		public ShopMenu(Player player, ItemGenerator itemGenerator)
 		{
 			InitializeComponent();
-			shop = new Shop(player);
+			shop = new Shop(player, itemGenerator);
 
 			this.ShopInventoryPanel.RowCount = shop.Stock.Count;
 
@@ -85,7 +85,7 @@ namespace SimpleGame
 			{
 				 return "none";
 			}
-			else if (shop.Customer.EquippedWeapon.Type == Item.ItemType.Weapon)
+			else if (shop.Customer.EquippedWeapon.Type == ItemType.Weapon)
 			{
 				Weapon current = (Weapon)shop.Customer.EquippedWeapon;
 				return current.Name + " (" + current.Damage + " damage)";
@@ -102,7 +102,7 @@ namespace SimpleGame
 			{
 				return "none";
 			}
-			else if (shop.Customer.EquippedArmour.Type == Item.ItemType.Armour)
+			else if (shop.Customer.EquippedArmour.Type == ItemType.Armour)
 			{
 				Armour current = (Armour)shop.Customer.EquippedArmour;
 				return current.Name + " (" + current.Protection + " protection)";
@@ -158,11 +158,11 @@ namespace SimpleGame
 
 			switch (item.Type)
 			{
-				case Item.ItemType.Weapon:
+				case ItemType.Weapon:
 					Weapon weapon = (Weapon)item;
 					info += "Damage: " + weapon.Damage.ToString() + Environment.NewLine;
 					break;
-				case Item.ItemType.Armour:
+				case ItemType.Armour:
 					Armour armour = (Armour)item;
 					info += "Protection: " + armour.Protection.ToString() + Environment.NewLine;
 					break;
@@ -172,7 +172,7 @@ namespace SimpleGame
 			info += Environment.NewLine;
 
 
-			if (shop.Customer.PlayerHasItem(item.ID) && item.Type != Item.ItemType.Consumable)
+			if (shop.Customer.PlayerHasItem(item.ID) && item.Type != ItemType.Consumable)
 			{
 				info += "(You already own one of these)";
 				boxtype = MessageBoxButtons.OK;
@@ -208,11 +208,11 @@ namespace SimpleGame
 
 			switch (item.Type)
 			{
-				case Item.ItemType.Weapon:
+				case ItemType.Weapon:
 					Weapon weapon = (Weapon)item;
 					info += "Damage: " + weapon.Damage.ToString() + Environment.NewLine;
 					break;
-				case Item.ItemType.Armour:
+				case ItemType.Armour:
 					Armour armour = (Armour)item;
 					info += "Protection: " + armour.Protection.ToString() + Environment.NewLine;
 					break;
@@ -222,12 +222,12 @@ namespace SimpleGame
 			info += Environment.NewLine;
 
 
-			if ((item.Type == Item.ItemType.Weapon && shop.Customer.EquippedWeapon.ID == item.ID) || (item.Type == Item.ItemType.Armour && shop.Customer.EquippedArmour.ID == item.ID))
+			if ((item.Type == ItemType.Weapon && shop.Customer.EquippedWeapon.ID == item.ID) || (item.Type == ItemType.Armour && shop.Customer.EquippedArmour.ID == item.ID))
 			{
 				info += "(already equipped)";
 				boxtype = MessageBoxButtons.OK;
 			}
-			else if (item.Type == Item.ItemType.Consumable)
+			else if (item.Type == ItemType.Consumable)
 			{
 				boxtype = MessageBoxButtons.OK;
 			}
@@ -242,12 +242,12 @@ namespace SimpleGame
 
 			if (result == DialogResult.Yes)
 			{
-				if (item.Type == Item.ItemType.Weapon)
+				if (item.Type == ItemType.Weapon)
 				{
 					shop.Customer.EquipWeapon((Weapon)item);
 					showPlayerInventory();
 				}
-				else if (item.Type == Item.ItemType.Armour)
+				else if (item.Type == ItemType.Armour)
 				{
 					shop.Customer.EquipArmour((Armour)item);
 					showPlayerInventory();

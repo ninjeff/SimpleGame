@@ -6,10 +6,11 @@ using System.Runtime.Serialization;
 
 namespace SimpleGame
 {
+	public enum ItemType { None, Weapon, Armour, Consumable }
+
 	[Serializable]
 	public class Item : ISerializable
 	{
-		public enum ItemType { None, Weapon, Armour, Consumable }
 
 		protected string name;
 		protected int weight;
@@ -18,38 +19,23 @@ namespace SimpleGame
 		protected System.Drawing.Image picture;
 		protected ItemType type;
 
-		public Item(int itemid)
+		public Item(int itemid, string name, int weight, int value, ItemType type)
 		{
 			this.id = itemid;
-			this.name = ItemStats.GetStat(itemid, "name");
-			this.weight = int.Parse(ItemStats.GetStat(itemid, "weight"));
-			this.value = int.Parse(ItemStats.GetStat(itemid, "value"));
-			this.type = this.setItemType(itemid);
+			this.name = name;
+			this.weight = weight;
+			this.value = value;
+			this.type = type;
 		}
-		
+
 		public Item(SerializationInfo info, StreamingContext ctxt)
 		{
 			this.id = (int)info.GetValue("id", typeof(int));
 			this.name = (string)info.GetValue("name", typeof(string));
 			this.value = (int)info.GetValue("value", typeof(int));
 			this.weight = (int)info.GetValue("weight", typeof(int));
-			this.type = (ItemType)info.GetValue("type", typeof(ItemType));
+			this.type = (ItemType)info.GetValue("type", typeof(int));
 			this.picture = (System.Drawing.Image)info.GetValue("picture", typeof(System.Drawing.Image));
-		}
-
-		protected ItemType setItemType(int itemid)
-		{
-			switch (ItemStats.GetStat(itemid, "type"))
-			{
-				case "weapon":
-					return ItemType.Weapon;
-				case "armour":
-					return ItemType.Armour;
-				case "consumable":
-					return ItemType.Consumable;
-				default:
-					return ItemType.None;
-			}
 		}
 
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext ctxt)
@@ -58,7 +44,7 @@ namespace SimpleGame
 			info.AddValue("name", this.name);
 			info.AddValue("value", this.value);
 			info.AddValue("weight", this.weight);
-			info.AddValue("type", this.type);
+			info.AddValue("type", (int)this.type);
 			info.AddValue("picture", this.picture);
 		}
 
@@ -77,9 +63,9 @@ namespace SimpleGame
 			{
 				switch (this.type)
 				{
-					case Item.ItemType.Weapon:
+					case ItemType.Weapon:
 						return "wield";
-					case Item.ItemType.Armour:
+					case ItemType.Armour:
 						return "wear";
 					default:
 						return "use";
@@ -96,7 +82,7 @@ namespace SimpleGame
 		{
 			get { return weight; }
 		}
-		
+
 		public int Value
 		{
 			get { return value; }

@@ -11,13 +11,15 @@ namespace SimpleGame
 	{
 		private int damage;
 
-		public Weapon(int itemid): base(itemid)
+		public Weapon(int itemid, string name, int weight, int value, ItemType type, int damage, System.Drawing.Image picture)
+			: base(itemid, name, weight, value, type)
 		{
-			this.damage = int.Parse(ItemStats.GetStat(itemid, "damage"));
-			this.picture = SimpleGame.Properties.Resources.weapon_image;
+			this.damage = damage;
+			this.picture = picture;
 		}
 
-		public Weapon(SerializationInfo info, StreamingContext ctxt): base(info, ctxt)
+		public Weapon(SerializationInfo info, StreamingContext ctxt)
+			: base(info, ctxt)
 		{
 			this.damage = (int)info.GetValue("damage", typeof(int));
 		}

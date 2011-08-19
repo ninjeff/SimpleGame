@@ -11,10 +11,13 @@ namespace SimpleGame
 {
 	public partial class NewGame : Form
 	{
-		public NewGame()
+		private readonly Game game;
+
+		public NewGame(Game game)
 		{
 			InitializeComponent();
-			CharacterNameInput.Text = Game.RandomName();
+			this.game = game;
+			CharacterNameInput.Text = game.RandomName();
 		}
 
 		public string CharacterNameTextBox()
@@ -30,7 +33,7 @@ namespace SimpleGame
 			}
 			else
 			{
-				CharacterNameInput.Text = Game.RandomName();
+				CharacterNameInput.Text = game.RandomName();
 			}
 		}
 
