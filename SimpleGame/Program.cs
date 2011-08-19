@@ -17,7 +17,7 @@ namespace SimpleGame
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			var getStat = XmlStatParser.GetStat();
+			DGetStat getStat = XmlStatParser.GetStat;
 			var getItemStat = ItemStats.GetStat(getStat, SimpleGame.Properties.Resources.items);
 			var getItemDictionary = new Dictionary<string, DGetItem<Item>>() { 
 			{ "armour", ItemGenerator.GetArmour(getItemStat, SimpleGame.Properties.Resources.armour_image) },
@@ -27,10 +27,11 @@ namespace SimpleGame
 			var getDefaultItem = ItemGenerator.GetDefaultItem(getItemStat);
 			var getItem = ItemGenerator.GetItem(getItemStat, getItemDictionary, getDefaultItem);
 			var game = new Game(getItem);
-			var idExists = XmlStatParser.IDExists();
+			DIdExists idExists = XmlStatParser.IDExists;
 			var monsterStatsFile = SimpleGame.Properties.Resources.monsters;
-			var getMonsterStat = MonsterStats.GetStat(getStat, monsterStatsFile);
-			var monsterExists = MonsterStats.Exists(idExists, monsterStatsFile);
+			var monsterStats = new MonsterStats(monsterStatsFile);
+			var getMonsterStat = monsterStats.GetStat(getStat);
+			var monsterExists = monsterStats.Exists(idExists);
 			var monsterRepository = new MonsterRepository(getMonsterStat, monsterExists, SimpleGame.Properties.Resources.rabbit_image);
 			var start = new MainMenu(game, getItem, monsterRepository);
 

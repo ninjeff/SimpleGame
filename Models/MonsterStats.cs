@@ -5,14 +5,21 @@ using System.Text;
 
 namespace SimpleGame.Models
 {
-	public static class MonsterStats
+	public class MonsterStats
 	{
-		public static DGetMonsterStat GetStat(DGetStat getStat, string statsFile)
+		private readonly string statsFile;
+
+		public MonsterStats(string statsFile)
+		{
+			this.statsFile = statsFile;
+		}
+
+		public DGetMonsterStat GetStat(DGetStat getStat)
 		{
 			return (monsterid, stat) => getStat(monsterid, stat, statsFile);
 		}
 
-		public static DMonsterExists Exists(DIdExists idExists, string statsFile)
+		public DMonsterExists Exists(DIdExists idExists)
 		{
 			return monsterid => idExists(monsterid, statsFile);
 		}
