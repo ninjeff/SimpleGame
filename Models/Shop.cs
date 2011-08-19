@@ -7,13 +7,13 @@ namespace SimpleGame.Models
 {
 	public class Shop
 	{
-		private readonly ItemGenerator itemGenerator;
+		private readonly DGetItem<Item> getItem;
 		private List<Item> stock = new List<Item>();
 		Player customer;
 
-		public Shop(Player shopper, ItemGenerator itemGenerator)
+		public Shop(Player shopper, DGetItem<Item> itemGenerator)
 		{
-			this.itemGenerator = itemGenerator;
+			this.getItem = itemGenerator;
 			this.customer = shopper;
 			this.stockshop();
 		}
@@ -22,7 +22,7 @@ namespace SimpleGame.Models
 		{
 			for (int i = 1; i < 9; i++)
 			{
-				stock.Add(itemGenerator.CreateItem(i));
+				stock.Add(getItem(i));
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace SimpleGame.Models
 			}
 			else
 			{
-				customer.Inventory.Add(itemGenerator.CreateItem(item.ID));
+				customer.Inventory.Add(getItem(item.ID));
 			}
 		}
 

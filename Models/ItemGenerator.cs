@@ -5,112 +5,98 @@ using System.Text;
 
 namespace SimpleGame.Models
 {
-	public class ItemGenerator
+	public static class ItemGenerator
 	{
-		private readonly ItemStats itemStats;
-		private readonly System.Drawing.Image armour_image;
-		private readonly System.Drawing.Image potion_image;
-		private readonly System.Drawing.Image weapon_image;
-
-		public ItemGenerator(ItemStats itemStats, System.Drawing.Image armour_image, System.Drawing.Image potion_image, System.Drawing.Image weapon_image)
+		public static DGetItem<Item> GetItem(DGetItemStat getStat, IDictionary<string, DGetItem<Item>> getItemDictionary, DGetItem<Item> getDefaultItem)
 		{
-			this.itemStats = itemStats;
-			this.armour_image = armour_image;
-			this.potion_image = potion_image;
-			this.weapon_image = weapon_image;
-		}
-
-		public Item CreateItem(int itemid)
-		{
-			switch (itemStats.GetStat(itemid, "type"))
+			return itemid =>
 			{
-				case "weapon":
-					return this.GetWeapon(itemid);
-				case "armour":
-					return this.GetArmour(itemid);
-				case "consumable":
-					return this.GetConsumable(itemid);
-				default:
-					return this.GetItem(itemid);
-			}
+				var type = getStat(itemid, "type");
+				DGetItem<Item> getItem;
+				if (getItemDictionary.TryGetValue(type, out getItem))
+				{
+					return getItem(itemid);
+				}
+				else
+				{
+					return getDefaultItem(itemid);
+				}
+			};
 		}
 
-		private Armour GetArmour(int itemid)
+		public static DGetItem<Armour> GetArmour(DGetItemStat getStat, System.Drawing.Image armour_image)
 		{
-			var name = itemStats.GetStat(itemid, "name");
-			var weight = int.Parse(itemStats.GetStat(itemid, "weight"));
-			var value = int.Parse(itemStats.GetStat(itemid, "value"));
-			var type = this.setItemType(itemid);
-			var protection = int.Parse(itemStats.GetStat(itemid, "protection"));
-			var picture = armour_image;
-
-			return new Armour(itemid, name, weight, value, type, protection, picture);
-		}
-
-		private Consumable GetConsumable(int itemid)
-		{
-			var name = itemStats.GetStat(itemid, "name");
-			var weight = int.Parse(itemStats.GetStat(itemid, "weight"));
-			var value = int.Parse(itemStats.GetStat(itemid, "value"));
-			var type = this.setItemType(itemid);
-			var picture = potion_image;
-			var consumabletype = this.setConsumableType(itemid);
-			var effectiveness = int.Parse(itemStats.GetStat(itemid, "effectiveness"));
-			var count = 1;
-
-			return new Consumable(itemid, name, weight, value, type, picture, consumabletype, effectiveness, count);
-		}
-
-		private Item GetItem(int itemid)
-		{
-			var name = itemStats.GetStat(itemid, "name");
-			var weight = int.Parse(itemStats.GetStat(itemid, "weight"));
-			var value = int.Parse(itemStats.GetStat(itemid, "value"));
-			var type = this.setItemType(itemid);
-
-			return new Item(itemid, name, weight, value, type);
-		}
-
-		private Weapon GetWeapon(int itemid)
-		{
-			var name = itemStats.GetStat(itemid, "name");
-			var weight = int.Parse(itemStats.GetStat(itemid, "weight"));
-			var value = int.Parse(itemStats.GetStat(itemid, "value"));
-			var type = this.setItemType(itemid);
-			var damage = int.Parse(itemStats.GetStat(itemid, "damage"));
-			var picture = weapon_image;
-
-			return new Weapon(itemid, name, weight, value, type, damage, picture);
-		}
-
-		private ConsumableType setConsumableType(int itemid)
-		{
-			switch (itemStats.GetStat(itemid, "consumabletype"))
+			return itemid =>
 			{
-				case "HealthPotion":
-					return ConsumableType.HealthPotion;
-				case "StrengthPotion":
-					return ConsumableType.StrengthPotion;
-				case "SpeedPotion":
-					return ConsumableType.SpeedPotion;
-				default:
-					return ConsumableType.None;
-			}
+				var name = getStat(itemid, "name");
+				var weight = int.Parse(getStat(itemid, "weight"));
+				var value = int.Parse(getStat(itemid, "value"));
+				var type = ItemType.Armour;
+				var protection = int.Parse(getStat(itemid, "protection"));
+				var picture = armour_image;
+
+				return new Armour(itemid, name, weight, value, type, protection, picture);
+			};
 		}
 
-		private ItemType setItemType(int itemid)
+		public static DGetItem<Consumable> GetConsumable(DGetItemStat getStat, System.Drawing.Image potion_image)
 		{
-			switch (itemStats.GetStat(itemid, "type"))
+			Func<int, ConsumableType> setConsumableType = itemid =>
 			{
-				case "weapon":
-					return ItemType.Weapon;
-				case "armour":
-					return ItemType.Armour;
-				case "consumable":
-					return ItemType.Consumable;
-				default:
-					return ItemType.None;
-			}
+				switch (getStat(itemid, "consumabletype"))
+				{
+					case "HealthPotion":
+						return ConsumableType.HealthPotion;
+					case "StrengthPotion":
+						return ConsumableType.StrengthPotion;
+					case "SpeedPotion":
+						return ConsumableType.SpeedPotion;
+					default:
+						return ConsumableType.None;
+				}
+			};
+
+			return itemid =>
+			{
+				var name = getStat(itemid, "name");
+				var weight = int.Parse(getStat(itemid, "weight"));
+				var value = int.Parse(getStat(itemid, "value"));
+				var type = ItemType.Consumable;
+				var picture = potion_image;
+				var consumabletype = setConsumableType(itemid);
+				var effectiveness = int.Parse(getStat(itemid, "effectiveness"));
+				var count = 1;
+
+				return new Consumable(itemid, name, weight, value, type, picture, consumabletype, effectiveness, count);
+			};
+		}
+
+		public static DGetItem<Item> GetDefaultItem(DGetItemStat getStat)
+		{
+			return itemid =>
+			{
+				var name = getStat(itemid, "name");
+				var weight = int.Parse(getStat(itemid, "weight"));
+				var value = int.Parse(getStat(itemid, "value"));
+				var type = ItemType.None;
+
+				return new Item(itemid, name, weight, value, type);
+			};
+		}
+
+		public static DGetItem<Weapon> GetWeapon(DGetItemStat getStat, System.Drawing.Image weapon_image)
+		{
+			return itemid =>
+			{
+				var name = getStat(itemid, "name");
+				var weight = int.Parse(getStat(itemid, "weight"));
+				var value = int.Parse(getStat(itemid, "value"));
+				var type = ItemType.Weapon;
+				var damage = int.Parse(getStat(itemid, "damage"));
+				var picture = weapon_image;
+
+				return new Weapon(itemid, name, weight, value, type, damage, picture);
+			};
 		}
 	}
 }

@@ -3,42 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
-	public class MonsterStats
+	public static class MonsterStats
 	{
-		private readonly IStatParser statParser;
-		private readonly string statsFile;
-		private readonly System.Drawing.Image rabbit_image;
-		private readonly System.Drawing.Image mystery_monster_image;
-
-		public MonsterStats(IStatParser statParser, string statsFile, System.Drawing.Image rabbit_image, System.Drawing.Image mystery_monster_image)
+		public static DGetMonsterStat GetStat(DGetStat getStat, string statsFile)
 		{
-			this.statParser = statParser;
-			this.statsFile = statsFile;
-			this.rabbit_image = rabbit_image;
-			this.mystery_monster_image = mystery_monster_image;
+			return (monsterid, stat) => getStat(monsterid, stat, statsFile);
 		}
 
-		public string GetStat(int monsterid, string stat)
+		public static DMonsterExists Exists(DIdExists idExists, string statsFile)
 		{
-			return statParser.GetStat(monsterid, stat, statsFile);
-		}
-
-		public System.Drawing.Image GetImage(int monsterid)
-		{
-			switch (monsterid)
-			{
-				case 0:
-					return rabbit_image;
-				default:
-					return mystery_monster_image;
-			}
-		}
-
-		public bool MonsterExists(int monsterid)
-		{
-			return statParser.IDExists(monsterid, statsFile);
+			return monsterid => idExists(monsterid, statsFile);
 		}
 	}
 }

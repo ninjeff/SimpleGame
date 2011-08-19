@@ -5,36 +5,11 @@ using System.Text;
 
 namespace SimpleGame.Models
 {
-	public class ItemStats
+	public static class ItemStats
 	{
-		private readonly IStatParser statParser;
-		private readonly string statsFile;
-		private readonly System.Drawing.Image rabbit_image;
-		private readonly System.Drawing.Image mystery_monster_image;
-
-		public ItemStats(IStatParser statParser, string statsFile, System.Drawing.Image rabbit_image, System.Drawing.Image mystery_monster_image)
+		public static DGetItemStat GetStat(DGetStat statParser, string statsFile)
 		{
-			this.statParser = statParser;
-			this.statsFile = statsFile;
-			this.rabbit_image = rabbit_image;
-			this.mystery_monster_image = mystery_monster_image;
+			return (itemid, stat) => statParser(itemid, stat, statsFile);
 		}
-
-		public string GetStat(int itemid, string stat)
-		{
-			return statParser.GetStat(itemid, stat, statsFile);
-		}
-
-		public System.Drawing.Image GetImage(int itemid)
-		{
-			switch (itemid)
-			{
-				case 0:
-					return rabbit_image;
-				default:
-					return mystery_monster_image;
-			}
-		}
-
 	}
 }

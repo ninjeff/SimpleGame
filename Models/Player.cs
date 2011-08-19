@@ -9,13 +9,13 @@ namespace SimpleGame.Models
 	[Serializable]
 	public class Player : ISerializable, IWarrior
 	{
-		private Stats stats;
+		private WarriorStats stats;
 		private Weapon equippedweapon;
 		private Armour equippedarmour;
 
 		private List<Item> inventory = new List<Item>();
 
-		public Player(string name, Stats stats, List<Item> inventory, Weapon weapon, Armour armour)
+		public Player(string name, WarriorStats stats, List<Item> inventory, Weapon weapon, Armour armour)
 		{
 			this.Name = name;
 			this.stats = stats;
@@ -26,7 +26,7 @@ namespace SimpleGame.Models
 
 		public Player(SerializationInfo info, StreamingContext ctxt)
 		{
-			this.stats = (Stats)info.GetValue("stats", typeof(Stats));
+			this.stats = (WarriorStats)info.GetValue("stats", typeof(WarriorStats));
 			this.inventory = (List<Item>)info.GetValue("inventory", typeof(List<Item>));
 			this.equippedweapon = (Weapon)info.GetValue("weapon", typeof(Weapon));
 			this.equippedarmour = (Armour)info.GetValue("armour", typeof(Armour));

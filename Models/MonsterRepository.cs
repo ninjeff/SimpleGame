@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
 	public class MonsterRepository
 	{
 		private IDictionary<int, ICollection<int>> monsterLevels;
-		private readonly MonsterStats monsterStats;
+		private readonly DGetMonsterStat getMonsterStat;
+		private readonly DMonsterExists monsterExists;
 		private readonly System.Drawing.Image rabbit_image;
 
-		public MonsterRepository(MonsterStats monsterStats, System.Drawing.Image rabbit_image)
+		public MonsterRepository(DGetMonsterStat getMonsterStat, DMonsterExists monsterExists, System.Drawing.Image rabbit_image)
 		{
-			this.monsterStats = monsterStats;
+			this.getMonsterStat = getMonsterStat;
+			this.monsterExists = monsterExists;
 			this.rabbit_image = rabbit_image;
 		}
 
@@ -29,18 +31,18 @@ namespace SimpleGame
 
 		private Monster GetMonsterById(int monsterid)
 		{
-			var name = monsterStats.GetStat(monsterid, "name");
-			var stats = new Stats()
+			var name = getMonsterStat(monsterid, "name");
+			var stats = new WarriorStats()
 			{
-				Level = int.Parse(monsterStats.GetStat(monsterid, "level")),
-				MaxHp = int.Parse(monsterStats.GetStat(monsterid, "hp")),
-				Hp = int.Parse(monsterStats.GetStat(monsterid, "hp")),
-				Accuracy = int.Parse(monsterStats.GetStat(monsterid, "accuracy")),
-				Strength = int.Parse(monsterStats.GetStat(monsterid, "damage")),
-				Speed = int.Parse(monsterStats.GetStat(monsterid, "speed"))
+				Level = int.Parse(getMonsterStat(monsterid, "level")),
+				MaxHp = int.Parse(getMonsterStat(monsterid, "hp")),
+				Hp = int.Parse(getMonsterStat(monsterid, "hp")),
+				Accuracy = int.Parse(getMonsterStat(monsterid, "accuracy")),
+				Strength = int.Parse(getMonsterStat(monsterid, "damage")),
+				Speed = int.Parse(getMonsterStat(monsterid, "speed"))
 			};
-			var xp = int.Parse(monsterStats.GetStat(monsterid, "xp"));
-			var gold = int.Parse(monsterStats.GetStat(monsterid, "gold"));
+			var xp = int.Parse(getMonsterStat(monsterid, "xp"));
+			var gold = int.Parse(getMonsterStat(monsterid, "gold"));
 			var picture = rabbit_image;
 
 			return new Monster(name, stats, xp, gold, picture);
@@ -55,9 +57,9 @@ namespace SimpleGame
 				{
 					monsterLevels[i] = new List<int>();
 				}
-				for (int i = 0; monsterStats.MonsterExists(i); i++)
+				for (int i = 0; monsterExists(i); i++)
 				{
-					int level = int.Parse(monsterStats.GetStat(i, "level"));
+					int level = int.Parse(getMonsterStat(i, "level"));
 					monsterLevels[level].Add(i);
 				}
 			}

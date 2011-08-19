@@ -3,45 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Models
 {
-	public class XmlStatParser : IStatParser
+	public static class XmlStatParser
 	{
-		public string GetStat(int entityid, string stat, string statsfile)
+		public static DGetStat GetStat()
 		{
-			using (var entitystats = new System.IO.StringReader(statsfile))
-			using (var xmlReader = System.Xml.XmlReader.Create(entitystats))
+			return (entityid, stat, statsfile) =>
 			{
-				string idtag = "id" + entityid.ToString();
-				while (xmlReader.Read())
+				using (var entitystats = new System.IO.StringReader(statsfile))
+				using (var xmlReader = System.Xml.XmlReader.Create(entitystats))
 				{
-					if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == idtag)
+					string idtag = "id" + entityid.ToString();
+					while (xmlReader.Read())
 					{
-						if (xmlReader.HasAttributes)
+						if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == idtag)
 						{
-							return xmlReader.GetAttribute(stat);
+							if (xmlReader.HasAttributes)
+							{
+								return xmlReader.GetAttribute(stat);
+							}
 						}
 					}
+					return "0";
 				}
-				return "0";
-			}
+			};
 		}
 
-		public bool IDExists(int entityid, string statsfile)
+		public static DIdExists IDExists()
 		{
-			using (var entitystats = new System.IO.StringReader(statsfile))
-			using (var xmlReader = System.Xml.XmlReader.Create(entitystats))
+			return (entityid, statsfile) =>
 			{
-				string idtag = "id" + entityid.ToString();
-				while (xmlReader.Read())
+				using (var entitystats = new System.IO.StringReader(statsfile))
+				using (var xmlReader = System.Xml.XmlReader.Create(entitystats))
 				{
-					if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == idtag)
+					string idtag = "id" + entityid.ToString();
+					while (xmlReader.Read())
 					{
-						return true;
+						if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == idtag)
+						{
+							return true;
+						}
 					}
+					return false;
 				}
-				return false;
-			}
+			};
 		}
 	}
 }

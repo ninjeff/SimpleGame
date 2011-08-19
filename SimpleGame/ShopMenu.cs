@@ -24,8 +24,8 @@ namespace SimpleGame
 		private enum Action {Buy, Equip};
 
 		private delegate void actionClickedEventHandler(Item item);
-		
-		public ShopMenu(Player player, ItemGenerator itemGenerator)
+
+		public ShopMenu(Player player, DGetItem<Item> itemGenerator)
 		{
 			InitializeComponent();
 			shop = new Shop(player, itemGenerator);

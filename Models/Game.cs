@@ -10,11 +10,11 @@ namespace SimpleGame.Models
 {
 	public class Game
 	{
-		private readonly ItemGenerator itemGenerator;
+		private readonly DGetItem<Item> getItem;
 
-		public Game(ItemGenerator itemGenerator)
+		public Game(DGetItem<Item> itemGenerator)
 		{
-			this.itemGenerator = itemGenerator;
+			this.getItem = itemGenerator;
 		}
 
 		public bool GameInProgress = false;
@@ -22,10 +22,10 @@ namespace SimpleGame.Models
 		public Player StartGame(string name)
 		{
 			List<Item> inventory = new List<Item>();
-			inventory.Add(itemGenerator.CreateItem(7));
-			Weapon weapon = (Weapon)itemGenerator.CreateItem(-1);
-			Armour armour = (Armour)itemGenerator.CreateItem(-2);
-			Stats playerStats = new Stats() { Accuracy = 80, MaxHp = 10, Hp = 10, Level = 1, Strength = 3, Speed = 7 };
+			inventory.Add(getItem(7));
+			Weapon weapon = (Weapon)getItem(-1);
+			Armour armour = (Armour)getItem(-2);
+			WarriorStats playerStats = new WarriorStats() { Accuracy = 80, MaxHp = 10, Hp = 10, Level = 1, Strength = 3, Speed = 7 };
 			Player player = new Player(name, playerStats, inventory, weapon, armour) { Gold = 1001 };
 			GameInProgress = true;
 			return player;

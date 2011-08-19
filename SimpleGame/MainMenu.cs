@@ -13,10 +13,10 @@ namespace SimpleGame
 	public partial class MainMenu : Form
 	{
 		private readonly Game game;
-		private readonly ItemGenerator itemGenerator;
+		private readonly DGetItem<Item> itemGenerator;
 		private readonly MonsterRepository monsterRepository;
 
-		public MainMenu(Game game, ItemGenerator itemGenerator, MonsterRepository monsterRepository)
+		public MainMenu(Game game, DGetItem<Item> itemGenerator, MonsterRepository monsterRepository)
 		{
 			InitializeComponent();
 			this.game = game;

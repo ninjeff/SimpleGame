@@ -7,12 +7,12 @@ namespace SimpleGame
 {
 	public class Monster : IWarrior
 	{
-		private Stats stats;
+		private WarriorStats stats;
 		private int xpreward;
 		private int goldreward;
 		private System.Drawing.Image picture;
 
-		public Monster(string name, Stats stats, int xpreward, int goldreward, System.Drawing.Image picture)
+		public Monster(string name, WarriorStats stats, int xpreward, int goldreward, System.Drawing.Image picture)
 		{
 			this.Name = name;
 			this.stats = stats;

@@ -13,11 +13,11 @@ namespace SimpleGame
 	public partial class GameMenu : Form
 	{
 		private readonly Game game;
-		private readonly ItemGenerator itemGenerator;
+		private readonly DGetItem<Item> itemGenerator;
 		private readonly MonsterRepository monsterRepository;
 		private Player player;
 
-		public GameMenu(Game game, ItemGenerator itemGenerator, Player player, MonsterRepository monsterRepository)
+		public GameMenu(Game game, DGetItem<Item> itemGenerator, Player player, MonsterRepository monsterRepository)
 		{
 			InitializeComponent();
 			this.game = game;

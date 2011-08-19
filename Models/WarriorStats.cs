@@ -6,7 +6,7 @@ using System.Text;
 namespace SimpleGame
 {
 	[Serializable]
-	public class Stats
+	public class WarriorStats
 	{
 		private int hp;
 		public int Hp
