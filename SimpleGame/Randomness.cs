@@ -22,7 +22,7 @@ namespace SimpleGame
 		public static T GetRandomElement<T>(this ICollection<T> source)
 		{
 			var count = source.Count;
-			var index = RandomNumber(count);
+			var index = RandomNumber(count - 1);
 			return source.ElementAt(index);
 		}
 	}

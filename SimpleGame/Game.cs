@@ -31,23 +31,21 @@ namespace SimpleGame
 
 		public static void SaveGame(Player player, string path)
 		{
-			Stream stream = File.Open(path, FileMode.Create);
-			BinaryFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(stream, player);
-			stream.Close();
+			using (Stream stream = File.Open(path, FileMode.Create))
+			{
+				BinaryFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(stream, player);
+			}
 		}
 
 		public static Player LoadGame(string path)
 		{
-			Stream stream = File.Open(path, FileMode.Open);
-			BinaryFormatter formatter = new BinaryFormatter();
-
-			Player player = (Player)formatter.Deserialize(stream);
-
-
-			//	Player player = new Player(name, hp, level, nextlevel, xp, accuracy, strength, speed, gold, inventory, weapon, armour);
-
-			return player;
+			using (Stream stream = File.Open(path, FileMode.Open))
+			{
+				BinaryFormatter formatter = new BinaryFormatter();
+				Player player = (Player)formatter.Deserialize(stream);
+				return player;
+			}
 		}
 	}
 }
