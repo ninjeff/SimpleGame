@@ -22,6 +22,8 @@ namespace SimpleGame
 		public static T GetRandomElement<T>(this ICollection<T> source)
 		{
 			var count = source.Count;
+			if (count < 1) throw new ArgumentException("Value must not be empty.", "source");
+
 			var index = RandomNumber(count - 1);
 			return source.ElementAt(index);
 		}

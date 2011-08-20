@@ -63,6 +63,12 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.2.5.3\lib\NET40-Client\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,6 +87,7 @@
     <Compile Include="BattleScreen.Designer.cs">
       <DependentUpon>BattleScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="CombatInventory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +152,7 @@
       <DependentUpon>ShopMenu.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
