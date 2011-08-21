@@ -11,8 +11,8 @@ namespace SimpleGame.Models
 	{
 		private int damage;
 
-		public Weapon(int itemid, string name, int weight, int value, ItemType type, int damage, System.Drawing.Image picture)
-			: base(itemid, name, weight, value, type)
+		public Weapon(int itemid, string name, int weight, int value, int speed, ItemType type, int damage, System.Drawing.Image picture)
+			: base(itemid, name, weight, value, speed, type)
 		{
 			this.damage = damage;
 			this.picture = picture;

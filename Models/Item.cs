@@ -16,15 +16,17 @@ namespace SimpleGame.Models
 		protected int weight;
 		protected int value;
 		protected int id;
+		protected int speed;
 		protected System.Drawing.Image picture;
 		protected ItemType type;
 
-		public Item(int itemid, string name, int weight, int value, ItemType type)
+		public Item(int itemid, string name, int weight, int value, int speed, ItemType type)
 		{
 			this.id = itemid;
 			this.name = name;
 			this.weight = weight;
 			this.value = value;
+			this.speed = speed;
 			this.type = type;
 		}
 
@@ -86,6 +88,11 @@ namespace SimpleGame.Models
 		public int Value
 		{
 			get { return value; }
+		}
+
+		public int Speed
+		{
+			get { return this.speed; }
 		}
 
 		public ItemType Type

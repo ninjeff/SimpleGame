@@ -44,19 +44,7 @@ namespace SimpleGame.Models
 
 		public int Gold { get; set; }
 
-		private int xp;
-		public int XP
-		{
-			get { return xp; }
-			set
-			{
-				xp = value;
-				while (this.XP >= this.NextLevel)
-				{
-					levelup();
-				}
-			}
-		}
+		public int XP { get; set; }
 
 		public int MaxHP { get { return stats.MaxHp; } }
 
@@ -112,6 +100,10 @@ namespace SimpleGame.Models
 			get { return 100 * (1 << (stats.Level - 1)); }
 		}
 
+		public bool CanLevelUp()
+		{
+			return this.XP >= this.NextLevel;
+		}
 
 		public string XPText
 		{
@@ -134,6 +126,11 @@ namespace SimpleGame.Models
 			set { stats.Hp = value; }
 		}
 
+		public int AttackSpeed
+		{
+			get { return stats.Speed + this.EquippedWeapon.Speed; }
+		}
+
 		public int Speed
 		{
 			get { return stats.Speed; }
@@ -146,7 +143,7 @@ namespace SimpleGame.Models
 			return stats.Hit();
 		}
 
-		private void levelup()
+		public void LevelUp()
 		{
 			stats.Level++;
 			stats.MaxHp += stats.Level * 5;

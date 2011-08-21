@@ -15,8 +15,8 @@ namespace SimpleGame.Models
 		private ConsumableType consumabletype;
 		private int effectiveness;
 
-		public Consumable(int itemid, string name, int weight, int value, ItemType type, System.Drawing.Image picture, ConsumableType consumabletype, int effectiveness, int count)
-			: base(itemid, name, weight, value, type)
+		public Consumable(int itemid, string name, int weight, int value, int speed, ItemType type, System.Drawing.Image picture, ConsumableType consumabletype, int effectiveness, int count)
+			: base(itemid, name, weight, value, speed, type)
 		{
 			this.picture = picture;
 			this.consumabletype = consumabletype;

@@ -29,8 +29,6 @@ namespace SimpleGame
 			this.MonsterPicture.Image = battle.monster.Picture;
 		}
 
-
-
 		private void SetHPTextColour()
 		{
 			if (battle.player.HP <= battle.player.MaxHP / 4)
@@ -68,7 +66,7 @@ namespace SimpleGame
 			}
 			if (battle.StillFighting())
 			{
-				battle.InitiateAttack();
+				battle.Attack();
 				UpdateTextAndPictures();
 			}
 		}
@@ -109,12 +107,11 @@ namespace SimpleGame
 		{
 			if (battle.StillFighting())
 			{
-				battle.InitiateAttack();
 				this.UpdateTextAndPictures();
 
 				if (battle.player.HP > battle.player.MaxHP / 5 && !autoattacktimer.Enabled)
 				{
-					autoattacktimer.Interval = 700;
+					autoattacktimer.Interval = 50;
 					autoattacktimer.Start();
 					autoattacktimer.Elapsed += new System.Timers.ElapsedEventHandler(this.AutoAttack);
 					this.AutoPicture.Image = SimpleGame.Properties.Resources.stop_image;
@@ -129,12 +126,12 @@ namespace SimpleGame
 
 		private void AutoAttack(object sender, EventArgs e)
 		{
+			Action a = () => this.UpdateTextAndPictures();
 			if (battle.StillFighting())
 			{
 				if (battle.player.HP > battle.player.MaxHP / 4)
 				{
-					battle.InitiateAttack();
-					Action a = () => this.UpdateTextAndPictures();
+					battle.Wait(10);	
 					this.Invoke(a);
 				}
 				else
@@ -180,6 +177,11 @@ namespace SimpleGame
 					MessageBox.Show(message, "You died!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					battle.player.Resurrect(doctorfee);
 				}
+				if (battle.player.CanLevelUp())
+				{
+					MessageBox.Show("Congratulations! You have levelled-up!" + System.Environment.NewLine + "Your maximum hitpoints have been increased", "Level Up!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					battle.player.LevelUp();
+				}
 
 			}
 			battle.player.TemporaryDamageBonus = 0;
@@ -188,7 +190,7 @@ namespace SimpleGame
 
 		private void ItemPicture_Click(object sender, EventArgs e)
 		{
-			CombatInventory inventorywindow = new CombatInventory(battle.player);
+			CombatInventory inventorywindow = new CombatInventory(battle);
 			inventorywindow.ShowDialog();
 			this.UpdateTextAndPictures();
 		}

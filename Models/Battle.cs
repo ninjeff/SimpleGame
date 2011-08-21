@@ -10,37 +10,86 @@ namespace SimpleGame.Models
 		public Player player;
 		public Monster monster;
 		public string combatlog;
+		private int playerTimer;
+		private int monsterTimer;
+		public enum CombatAction { Attack, UseItem };
+		private CombatAction nextAction;
+		private Item nextActionItem;
 
 		public Battle(Player currentplayer, Monster monster)
 		{
 			player = currentplayer;
 			this.monster = monster;
-			if (this.MonsterHasInitiative())
-			{
-				this.MonsterAttack();
-			}
+			playerTimer = monsterTimer = 0;
+			nextAction = CombatAction.Attack;
+			nextActionItem = player.EquippedWeapon;
 		}
 
 		public void PlayerAttack()
 		{
-			if (player.Hit())
+			if (player.Alive)
 			{
-				int damage = Randomness.RandomNumber(player.Damage);
-
-				if (damage > 0)
+				if (player.Hit())
 				{
-					monster.HP -= damage;
-					this.combatlog = ("You hit the " + monster.Name + " and dealt " + damage.ToString() + " damage!" + System.Environment.NewLine + this.combatlog);
+					int damage = Randomness.RandomNumber(player.Damage);
+
+					if (damage > 0)
+					{
+						monster.HP -= damage;
+						this.combatlog = ("You hit the " + monster.Name + " and dealt " + damage.ToString() + " damage!" + System.Environment.NewLine + this.combatlog);
+					}
+					else
+					{
+						this.combatlog = ("You hit the " + monster.Name + ", but you didn't deal any damage." + System.Environment.NewLine + this.combatlog);
+					}
 				}
 				else
 				{
-					this.combatlog = ("You hit the " + monster.Name + ", but you didn't deal any damage." + System.Environment.NewLine + this.combatlog);
+					this.combatlog = ("You missed the " + monster.Name + System.Environment.NewLine + this.combatlog);
 				}
 			}
-			else
+		}
+
+		public void SelectNextAction(CombatAction action, Item itemToUse)
+		{
+			this.nextAction = action;
+			this.nextActionItem = itemToUse;
+		}
+
+		public void Attack()
+		{
+			SelectNextAction(CombatAction.Attack, player.EquippedWeapon);
+			this.Wait(1000 / player.AttackSpeed);
+		}
+
+		public void performItemEffect(Consumable item)
+		{
+
+			switch (item.ConsumableType)
 			{
-				this.combatlog = ("You missed the " + monster.Name + System.Environment.NewLine + this.combatlog);
+				case ConsumableType.HealthPotion:
+					player.HP += item.Effectiveness;
+					break;
+				case ConsumableType.StrengthPotion:
+					player.TemporaryDamageBonus = item.Effectiveness;
+					break;
+				case ConsumableType.SpeedPotion:
+					break;
+				default:
+					break;
 			}
+			item.Count -= 1;
+			if (item.Count <= 0)
+			{
+				player.Inventory.Remove(item);
+			}
+		}
+
+		public void UseItem(Consumable item)
+		{
+			this.nextAction = CombatAction.UseItem;
+			this.nextActionItem = item;
+			this.Wait(1000 / (player.Speed + item.Speed));
 		}
 
 		public void MonsterAttack()
@@ -69,11 +118,7 @@ namespace SimpleGame.Models
 		{
 			PlayerAttack();
 
-			if (monster.Alive)
-			{
-				MonsterAttack();
-			}
-			else
+			if (!monster.Alive)
 			{
 				string congratulations = "Congratulations! You defeated the " + monster.Name + "." + System.Environment.NewLine + "You have gained " + monster.XPReward.ToString() + " experience points";
 				if (monster.GoldReward > 0)
@@ -84,6 +129,35 @@ namespace SimpleGame.Models
 				player.XP += monster.XPReward;
 				player.Gold += monster.GoldReward;
 			}
+		}
+
+		private void doPlayerAction()
+		{
+			switch (this.nextAction)
+			{
+				case CombatAction.Attack:
+					this.InitiateAttack();
+					break;
+				case CombatAction.UseItem:
+					this.performItemEffect((Consumable)nextActionItem);
+					break;
+				default:
+					break;
+			}
+		}
+
+		private void checkPlayerAction()
+		{
+			if (playerTimer >= (1000 / playerActionSpeed()))
+			{
+				playerTimer -= (1000 / playerActionSpeed());
+				doPlayerAction();
+			}
+		}
+
+		public int playerActionSpeed()
+		{
+			return player.Speed + nextActionItem.Speed;
 		}
 
 		public bool TryToRun()
@@ -102,14 +176,41 @@ namespace SimpleGame.Models
 
 		public bool StillFighting()
 		{
-			if (player.Alive && monster.Alive)
+			return player.Alive && monster.Alive;
+		}
+
+		public void IncrementTime()
+		{
+			playerTimer += 1;
+			monsterTimer += 1;
+		}
+
+		public void checkMonsterAttack()
+		{
+			if (monsterTimer >= (1000 / monster.Speed))
 			{
-				return true;
+				monsterTimer -= (1000 / monster.Speed);
+				MonsterAttack();
 			}
-			else
+		}
+
+		public void Wait(int units)
+		{
+			for (int i = 0; i < units; i++)
 			{
-				return false;
+				this.IncrementTime();
+				if (Randomness.RandomNumber(player.Speed) >= Randomness.RandomNumber(monster.Speed))
+				{
+					checkPlayerAction();
+					checkMonsterAttack();
+				}
+				else
+				{
+					checkMonsterAttack();
+					checkPlayerAction();
+				}
 			}
+			return;
 		}
 
 		public bool MonsterHasInitiative()

@@ -17,8 +17,8 @@ namespace SimpleGame.Models
 			this.protection = (int)info.GetValue("protection", typeof(int));
 		}
 
-		public Armour(int itemid, string name, int weight, int value, ItemType type, int protection, System.Drawing.Image picture)
-			: base(itemid, name, weight, value, type)
+		public Armour(int itemid, string name, int weight, int value, int speed, ItemType type, int protection, System.Drawing.Image picture)
+			: base(itemid, name, weight, value, speed, type)
 		{
 			this.protection = protection;
 			this.picture = picture;

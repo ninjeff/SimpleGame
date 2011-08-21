@@ -12,17 +12,17 @@ namespace SimpleGame
 {
 	public partial class CombatInventory : Form
 	{
-		Player player;
+		Battle battle;
 
 		private List<PictureBox> inventoryPicture = new List<PictureBox>();
 		private List<Label> inventoryLabel = new List<Label>();
 		private List<Consumable> inventoryConsumables = new List<Consumable>();
 
 
-		public CombatInventory(Player currentplayer)
+		public CombatInventory(Battle battle)
 		{
 			InitializeComponent();
-			player = currentplayer;
+			this.battle = battle;
 			getpotionlist();
 			showPlayerInventory();
 
@@ -88,32 +88,15 @@ namespace SimpleGame
 		{
 			PictureBox source = (PictureBox)sender;
 			Consumable selection = (Consumable)source.Tag;
-			selection.Count -= 1;
-			if (selection.Count <= 0)
-			{
-				 player.Inventory.Remove(selection);
-			}
 
-			switch (selection.ConsumableType)
-			{
-				case ConsumableType.HealthPotion:
-					player.HP += selection.Effectiveness;
-					break;
-				case ConsumableType.StrengthPotion:
-					player.TemporaryDamageBonus = selection.Effectiveness;
-					break;
-				case ConsumableType.SpeedPotion:
-					break;
-				default:
-					break;
-			}
-			
-			this.showPlayerInventory();
+
+			battle.UseItem(selection);
+			this.Close();
 		}
 
 		private void getpotionlist()
 		{
-			List<Item> templist = player.Inventory.FindAll(delegate(Item target) { return target.Type == ItemType.Consumable; });
+			List<Item> templist = battle.player.Inventory.FindAll(delegate(Item target) { return target.Type == ItemType.Consumable; });
 			inventoryConsumables = new List<Consumable>();
 
 			foreach (Item item in templist)

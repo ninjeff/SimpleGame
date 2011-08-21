@@ -31,11 +31,12 @@ namespace SimpleGame.Models
 				var name = getStat(itemid, "name");
 				var weight = int.Parse(getStat(itemid, "weight"));
 				var value = int.Parse(getStat(itemid, "value"));
+				var speed = int.Parse(getStat(itemid, "speed"));
 				var type = ItemType.Armour;
 				var protection = int.Parse(getStat(itemid, "protection"));
 				var picture = armour_image;
 
-				return new Armour(itemid, name, weight, value, type, protection, picture);
+				return new Armour(itemid, name, weight, value, speed, type, protection, picture);
 			};
 		}
 
@@ -60,6 +61,7 @@ namespace SimpleGame.Models
 			{
 				var name = getStat(itemid, "name");
 				var weight = int.Parse(getStat(itemid, "weight"));
+				var speed = int.Parse(getStat(itemid, "speed"));
 				var value = int.Parse(getStat(itemid, "value"));
 				var type = ItemType.Consumable;
 				var picture = potion_image;
@@ -67,7 +69,7 @@ namespace SimpleGame.Models
 				var effectiveness = int.Parse(getStat(itemid, "effectiveness"));
 				var count = 1;
 
-				return new Consumable(itemid, name, weight, value, type, picture, consumabletype, effectiveness, count);
+				return new Consumable(itemid, name, weight, value, speed, type, picture, consumabletype, effectiveness, count);
 			};
 		}
 
@@ -77,10 +79,11 @@ namespace SimpleGame.Models
 			{
 				var name = getStat(itemid, "name");
 				var weight = int.Parse(getStat(itemid, "weight"));
+				var speed = int.Parse(getStat(itemid, "speed"));
 				var value = int.Parse(getStat(itemid, "value"));
 				var type = ItemType.None;
 
-				return new Item(itemid, name, weight, value, type);
+				return new Item(itemid, name, weight, value, speed, type);
 			};
 		}
 
@@ -91,11 +94,12 @@ namespace SimpleGame.Models
 				var name = getStat(itemid, "name");
 				var weight = int.Parse(getStat(itemid, "weight"));
 				var value = int.Parse(getStat(itemid, "value"));
+				var speed = int.Parse(getStat(itemid, "speed"));
 				var type = ItemType.Weapon;
 				var damage = int.Parse(getStat(itemid, "damage"));
 				var picture = weapon_image;
 
-				return new Weapon(itemid, name, weight, value, type, damage, picture);
+				return new Weapon(itemid, name, weight, value, speed, type, damage, picture);
 			};
 		}
 	}
